@@ -9,6 +9,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import content from "../../lib/content.json";
 import ExperiencePage from "../../components/ExperiencePage";
+import AboutPage from "../../components/AboutPage";
 import { Rates, RoomDetails } from "../../components/Rooms";
 const titles: Record<string, string> = {
   "tentang-stayrehat": "Tentang Kami",
@@ -38,6 +39,7 @@ export default async function Page({
   const key = slug.join("/");
   if (!titles[key]) notFound();
   if (key === "facilities") return <ExperiencePage />;
+  if (key === "tentang-stayrehat") return <AboutPage />;
   const data =
     content[
       (key === "2025/06/14/hello-world" ? "home" : key) as keyof typeof content
@@ -74,26 +76,6 @@ export default async function Page({
             <Rates />
           </div>
           <RoomDetails />
-        </>
-      ) : key === "tentang-stayrehat" ? (
-        <>
-          <section className="about-lead">
-            <figure>
-              <img src="/images/42.webp" alt="Suasana pintu masuk StayRehat" />
-              <figcaption>Suasana pintu masuk StayRehat</figcaption>
-            </figure>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: content["tentang-stayrehat"].lead,
-              }}
-            />
-          </section>
-          <article
-            className="prose about-body"
-            dangerouslySetInnerHTML={{
-              __html: content["tentang-stayrehat"].body,
-            }}
-          />
         </>
       ) : key === "location-map" ? (
         <>
