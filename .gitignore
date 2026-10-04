@@ -1,0 +1,12 @@
+node_modules/
+.next/
+out/
+.env*
+!.env.example
+*.tsbuildinfo
+
+# Local tooling and deployment state
+.DS_Store
+.vercel/
+*.log
+coverage/

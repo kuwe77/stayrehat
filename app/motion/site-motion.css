@@ -1,0 +1,429 @@
+/* StayRehat integration. Recipe selectors stay intact in recipes.css.
+   Tune semantic tokens here; no new runtime motion library. */
+:root {
+  --stagger-blur: 2px;
+  --digit-distance: 4px;
+  --digit-stagger: 40ms;
+  --digit-ease: var(--ease-smooth-out);
+  --check-rotate-from: -12deg;
+  --check-y-amount: 12px;
+  --check-blur-from: 3px;
+}
+.rdp-root {
+  --rdp-animation_duration: var(--duration-fast);
+  --rdp-animation_timing: var(--ease-smooth-out);
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.text-swap-slot {
+  display: inline-grid;
+  white-space: nowrap;
+}
+.t-stagger-line {
+  transition-delay: calc(var(--reveal-order, 0) * var(--stagger-stagger));
+}
+.t-stagger-line.motion-media {
+  --stagger-blur: 0px;
+}
+.t-stagger.is-settled > .t-stagger-line {
+  will-change: auto;
+}
+/* Restore each component's layout where the portable snippet uses block. */
+.t-stagger-line.text-link,
+.t-stagger-line.hero-link {
+  display: inline-flex;
+}
+.highlights > .t-stagger-line,
+.footer-bottom > a.t-stagger-line {
+  display: flex;
+}
+.page-heading > .t-stagger-line:not(h1) {
+  display: inline-block;
+}
+.hero-copy,
+.booking {
+  animation: none;
+}
+.hero-copy .t-stagger-line {
+  --stagger-stagger: 80ms;
+}
+.hero-copy > .eyebrow {
+  display: flex;
+}
+/* Page changes settle fast; the persistent header does not leave the screen. */
+@media (prefers-reduced-motion: no-preference) {
+  .route-enter {
+    animation: route-settle var(--duration-fast) var(--ease-smooth-out) both;
+  }
+  .booking {
+    animation: booking-arrive var(--duration-slow) var(--ease-smooth-out) both;
+  }
+  .photo-stage {
+    animation: photo-enter var(--page-slide-dur) var(--page-slide-ease) both;
+  }
+  .rdp-selected .rdp-day_button {
+    animation: date-select var(--duration-fast) var(--ease-smooth-out) both;
+  }
+}
+@keyframes route-settle {
+  from {
+    opacity: 0.4;
+    translate: 0 var(--distance-base);
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+@keyframes booking-arrive {
+  from {
+    opacity: 0;
+    translate: 0 var(--distance-medium);
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+@keyframes photo-enter {
+  from {
+    opacity: 0.35;
+    translate: var(--photo-direction, 8px) 0;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+@keyframes date-select {
+  from {
+    scale: 0.92;
+  }
+  to {
+    scale: 1;
+  }
+}
+/* Tokenized interactions shared by every page, both themes and keyboard use. */
+.button,
+.header-book,
+.icon-button,
+.text-button,
+.contact-link,
+.footer a,
+.rdp-day_button,
+.rdp-button_previous,
+.rdp-button_next {
+  transition:
+    background-color var(--duration-fast) var(--ease-smooth-out),
+    color var(--duration-fast) var(--ease-smooth-out),
+    border-color var(--duration-fast) var(--ease-smooth-out),
+    box-shadow var(--duration-fast) var(--ease-smooth-out),
+    transform var(--duration-quick) var(--ease-smooth-out),
+    opacity var(--duration-quick) var(--ease-smooth-out);
+}
+.button:active,
+.header-book:active,
+.icon-button:active,
+.gallery-image:active {
+  transform: scale(0.98);
+}
+:is(
+    .button,
+    .header-book,
+    .text-link,
+    .hero-link,
+    .contact-link,
+    .footer-bottom a
+  )
+  > svg {
+  transition: transform var(--duration-fast) var(--ease-smooth-out);
+}
+:is(
+    .button,
+    .header-book,
+    .text-link,
+    .hero-link,
+    .contact-link,
+    .footer-bottom a
+  ):is(:hover, :focus-visible)
+  > svg:last-child {
+  transform: translate(2px, -2px);
+}
+.icon-button:is(:hover, :focus-visible) {
+  background: var(--soft);
+  border-radius: 2px;
+}
+.nav a:after {
+  transition: transform var(--duration-fast) var(--ease-smooth-out);
+}
+.room-photo img,
+.gallery-image img {
+  transition:
+    transform var(--duration-very-slow) var(--ease-smooth-out),
+    filter var(--duration-very-slow) var(--ease-smooth-out);
+}
+.gallery-image > span {
+  transition:
+    opacity var(--duration-fast) var(--ease-smooth-out),
+    translate var(--duration-fast) var(--ease-smooth-out);
+  translate: 0 4px;
+}
+.gallery-image:is(:hover, :focus-visible) > span {
+  translate: 0 0;
+}
+.room-heading svg {
+  transition: transform var(--duration-fast) var(--ease-smooth-out);
+}
+.room-card:is(:hover, :focus-visible) .room-heading svg {
+  transform: translate(3px, -3px);
+}
+.room-card:focus-visible .room-photo img {
+  transform: scale(1.045);
+}
+.booking select,
+.guest-form input,
+.guest-form textarea {
+  transition:
+    border-color var(--duration-quick) var(--ease-smooth-out),
+    box-shadow var(--duration-quick) var(--ease-smooth-out),
+    background-color var(--duration-fast) var(--ease-smooth-out);
+}
+.booking select:focus,
+.guest-form input:focus,
+.guest-form textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent);
+}
+.date-summary.is-error {
+  border-color: #a3322b;
+}
+[data-theme="dark"] .date-summary.is-error {
+  border-color: #ffafa4;
+}
+/* Retain the real checkbox for native keyboard/form semantics. */
+.motion-checkbox {
+  position: relative;
+  cursor: pointer;
+  min-height: 25px;
+}
+.motion-checkbox > input {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  opacity: 0;
+  z-index: 1;
+  cursor: pointer;
+}
+.motion-checkbox .t-check {
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--muted);
+  display: grid;
+  place-items: center;
+  border-radius: 2px;
+  color: var(--on-accent);
+}
+.motion-checkbox .t-check[aria-checked="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.motion-checkbox input:focus-visible + .t-check {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.motion-checkbox .t-check svg {
+  opacity: 0;
+  scale: 0.65;
+  transition:
+    opacity var(--check-box) var(--check-ease),
+    scale var(--check-draw) var(--check-ease);
+}
+.motion-checkbox .t-check[aria-checked="true"] svg {
+  opacity: 1;
+  scale: 1;
+}
+.t-icon-swap .t-icon {
+  display: grid;
+  place-items: center;
+}
+/* Native dialogs stay in the top layer for the entire close transition. */
+dialog.t-modal::backdrop {
+  transition:
+    background-color var(--modal-open-dur) var(--modal-ease),
+    backdrop-filter var(--modal-open-dur) var(--modal-ease);
+}
+dialog.t-modal.is-closing::backdrop {
+  background-color: transparent;
+  backdrop-filter: blur(0);
+  transition-duration: var(--modal-close-dur);
+}
+.booking-steps {
+  overflow: hidden;
+  min-height: 1px;
+}
+.booking-steps .t-page {
+  inset: 0 0 auto;
+  visibility: hidden;
+  transition-property: opacity, transform, filter, visibility;
+  transition-duration:
+    var(--page-fade-dur), var(--page-slide-dur), var(--page-slide-dur), 0s;
+  transition-delay: 0s, 0s, 0s, var(--page-slide-dur);
+}
+.booking-steps .t-page[data-active="true"] {
+  visibility: visible;
+  transition-delay: 0s;
+}
+.booking-steps .t-page[data-page-id="3"] {
+  --t-page-from-x: var(--page-slide-distance);
+}
+.booking-steps[data-page="3"] .t-page[data-page-id="3"] {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+  filter: blur(0);
+}
+.booking-steps h2:focus {
+  outline: none;
+}
+.photo-stage {
+  height: 70dvh;
+  isolation: isolate;
+  --reveal-blur: 0px;
+}
+.photo-stage[data-direction="-1"] {
+  --photo-direction: -8px;
+}
+.photo-stage .t-skel-content {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+.photo-stage .t-skel-skeleton > div {
+  width: 100%;
+  height: 100%;
+  background: var(--soft);
+}
+.photo-stage .t-skel-skeleton {
+  pointer-events: none;
+}
+.photo-error {
+  position: absolute;
+  inset: 40% 12% auto;
+  text-align: center;
+  z-index: 3;
+  background: var(--surface);
+  padding: 20px;
+}
+@media (min-width: 951px) {
+  .nav.t-dropdown {
+    transform: none;
+    opacity: 1;
+    pointer-events: auto;
+    will-change: auto;
+  }
+}
+@media (max-width: 950px) {
+  .nav.t-dropdown {
+    display: flex;
+    visibility: hidden;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    max-height: calc(100dvh - 80px);
+    overflow: auto;
+  }
+  .nav.t-dropdown.is-open,
+  .nav.t-dropdown.is-closing {
+    visibility: visible;
+  }
+  .nav.t-dropdown a {
+    opacity: 0;
+    translate: 0 4px;
+    transition:
+      opacity var(--duration-fast) var(--ease-smooth-out),
+      translate var(--duration-fast) var(--ease-smooth-out);
+    transition-delay: 0s;
+  }
+  .nav.t-dropdown.is-open a {
+    opacity: 1;
+    translate: 0 0;
+    transition-delay: calc(var(--nav-order, 0) * var(--duration-stagger));
+  }
+  .nav a:nth-child(2) {
+    --nav-order: 1;
+  }
+  .nav a:nth-child(3) {
+    --nav-order: 2;
+  }
+  .nav a:nth-child(4) {
+    --nav-order: 3;
+  }
+  .nav a:nth-child(5) {
+    --nav-order: 4;
+  }
+  .nav a:nth-child(6) {
+    --nav-order: 5;
+  }
+  .nav a:nth-child(7) {
+    --nav-order: 6;
+  }
+}
+@media (max-width: 700px) {
+  .photo-stage {
+    height: 65dvh;
+  }
+}
+@media (hover: none) {
+  .room-card:hover .room-photo img,
+  .gallery-image:hover img {
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *:before,
+  *:after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  .t-stagger-line {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+  .route-enter,
+  .photo-stage,
+  .booking {
+    translate: none !important;
+  }
+  .button:active,
+  .icon-button:active,
+  .header-book:active,
+  .gallery-image:active,
+  .room-card:hover .room-photo img,
+  .gallery-image:hover img {
+    transform: none !important;
+  }
+  .t-page-slide .t-page {
+    transform: none !important;
+    filter: none !important;
+  }
+}
+
+/* Screen blending removes the logo's white plate in dark mode. Invert + hue
+   rotation keeps the wordmark legible and its teal hue, without altering the asset. */
+[data-theme="dark"] .brand img {filter:invert(1) hue-rotate(180deg) contrast(1.2);mix-blend-mode:screen}
+.experience-hero-copy .t-stagger-line.experience-hero-link {display:inline-flex}
