@@ -19,11 +19,13 @@ export default function Home() {
         <picture>
           <source
             media="(max-width: 700px)"
-            srcSet="/images/hero-mobile.webp"
+            srcSet="/images/hero-pool-enhanced-mobile.webp"
           />
           <img
             className="hero-image"
-            src="/images/01.webp"
+            src="/images/hero-pool-enhanced.webp"
+            width={1536}
+            height={1024}
             alt="Kolam renang dan homestay kontena StayRehat di Gombak"
             fetchPriority="high"
           />
